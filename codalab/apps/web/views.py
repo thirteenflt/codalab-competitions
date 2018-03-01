@@ -514,11 +514,8 @@ class CompetitionDetailView(DetailView):
         context['current_server_time'] = datetime.now()
 
         context["first_phase"], context["previous_phase"], context['active_phase'], context["next_phase"] = get_first_previous_active_and_next_phases(competition)
-
         context['phase'] = context['active_phase']
 
-        # Top 3 Leaderboard
-        # Get the month from submitted_at
         try:
             truncate_date = connection.ops.date_trunc_sql('day', 'submitted_at')
             score_def = SubmissionScoreDef.objects.filter(competition=competition).order_by('ordering').first()
@@ -539,17 +536,20 @@ class CompetitionDetailView(DetailView):
                         'sorting': score_def.sorting,
                     }
                 # Below is where we refactored top_three context.
-                # context['top_three_leaders'] = self.get_object().get_top_three()
                 context['top_three'] = context['active_phase'].scores()
+
+                top_three_list = []
 
                 for group in context['top_three']:
                     for _, scoredata in group['scores']:
-                        sub = models.CompetitionSubmission.objects.get(pk=scoredata['id'])
-                        scoredata['date'] = sub.submitted_at
-                        scoredata['count'] = sub.phase.submissions.filter(participant=sub.participant).count()
-                        if sub.team:
-                            scoredata['team_name'] = sub.team.name
-
+                        # Top Three
+                        values = list(sorted(scoredata['values'], key=lambda x: x['rnk']))
+                        first_score = values[0]['val']
+                        top_three_list.append({
+                            "username": scoredata['username'],
+                            "score": first_score
+                        })
+                context['top_three'] = top_three_list[0:3]
         except ObjectDoesNotExist:
             context['top_three_leaders'] = None
             context['graph'] = None
