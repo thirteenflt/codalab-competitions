@@ -307,7 +307,7 @@ class Competition(ChaHubSaveMixin, models.Model):
 
             phase_data.append({
                 "start": phase.start_date.isoformat(),
-                "end": phase_end_date,
+                "end": phase_end_date.isoformat(),
                 "index": phase.phasenumber,
                 "name": phase.label,
                 "description": phase.description,
