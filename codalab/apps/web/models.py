@@ -292,10 +292,22 @@ class Competition(ChaHubSaveMixin, models.Model):
 
     def get_chahub_data(self):
         phase_data = []
-        for phase in self.phases.all():
+        phases = list(self.phases.all().order_by('-start_date'))
+        phase_list_length = len(phases)
+        for index, phase in phases:
+            if phase_list_length > index + 1:
+                # Grab next phase start_date - 1 minute
+                phase_end_date = phases[index + 1].start_date - datetime.timedelta(minutes=1)
+            else:
+                # If our phase is the last one
+                if phase == phases[phase_list_length - 1]:
+                    phase_end_date = self.end_date
+                else:
+                    phase_end_date = None
+
             phase_data.append({
                 "start": phase.start_date.isoformat(),
-                # "end": ,  # We don't have an end...
+                "end": phase_end_date,
                 "index": phase.phasenumber,
                 "name": phase.label,
                 "description": phase.description,
