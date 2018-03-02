@@ -292,7 +292,8 @@ class Competition(ChaHubSaveMixin, models.Model):
 
     def get_chahub_data(self):
         phase_data = []
-        phases = list(self.phases.all().order_by('-start_date'))
+        phases = list(self.phases.all().order_by('start_date'))
+        print("Phases are {}".format(phases))
         phase_list_length = len(phases)
         for index, phase in enumerate(phases):
             if phase_list_length > index + 1:
