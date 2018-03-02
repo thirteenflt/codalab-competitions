@@ -298,7 +298,7 @@ class Competition(ChaHubSaveMixin, models.Model):
             if phase_list_length > index + 1:
                 # Grab next phase start_date - 1 minute
                 phase_end_date = phases[index + 1].start_date - datetime.timedelta(minutes=1)
-                phase.end_date = phase.end_date.isoformat()
+                phase_end_date = phase_end_date.isoformat()
             else:
                 # If our phase is the last one
                 if phase == phases[phase_list_length - 1]:
