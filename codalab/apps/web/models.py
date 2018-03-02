@@ -305,7 +305,7 @@ class Competition(ChaHubSaveMixin, models.Model):
                     phase_end_date = self.end_date
                 else:
                     phase_end_date = None
-
+            print("Phase end date is: {}".format(phase_end_date))
             phase_data.append({
                 "start": phase.start_date.isoformat(),
                 "end": phase_end_date,
