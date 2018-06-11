@@ -228,6 +228,7 @@ class Base(Configuration):
         # Storage API
         'storages',
         's3direct',
+        'minio_storage',
 
         # Migration app
         #'south',
@@ -402,6 +403,15 @@ class Base(Configuration):
     BUNDLE_AZURE_ACCOUNT_NAME = os.environ.get('BUNDLE_AZURE_ACCOUNT_NAME', AZURE_ACCOUNT_NAME)
     BUNDLE_AZURE_ACCOUNT_KEY = os.environ.get('BUNDLE_AZURE_ACCOUNT_KEY', AZURE_ACCOUNT_KEY)
     BUNDLE_AZURE_CONTAINER = os.environ.get('BUNDLE_AZURE_CONTAINER', 'bundles')
+
+    # Minio
+    USE_MINIO = DEFAULT_FILE_STORAGE == 'minio_storage.storage.MinioStorage'
+    MINIO_STORAGE_ENDPOINT = os.environ.get('MINIO_STORAGE_ENDPOINT')
+    MINIO_STORAGE_USE_HTTPS = os.environ.get('MINIO_STORAGE_USE_HTTPS')
+    MINIO_STORAGE_ACCESS_KEY = os.environ.get('MINIO_STORAGE_ACCESS_KEY')
+    MINIO_STORAGE_SECRET_KEY = os.environ.get('MINIO_STORAGE_SECRET_KEY')
+    MINIO_STORAGE_MEDIA_BUCKET_NAME = os.environ.get('MINIO_STORAGE_MEDIA_BUCKET_NAME')
+    MINIO_PRIVATE_STORAGE_BUCKET = os.environ.get('MINIO_PRIVATE_STORAGE_BUCKET')
 
 
     # =========================================================================

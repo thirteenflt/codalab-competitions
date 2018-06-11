@@ -22,6 +22,11 @@ elif hasattr(settings, 'BUNDLE_AZURE_ACCOUNT_NAME') and settings.BUNDLE_AZURE_AC
     PublicStorage = StorageClass(account_name=settings.AZURE_ACCOUNT_NAME,
                                  account_key=settings.AZURE_ACCOUNT_KEY,
                                  azure_container=settings.AZURE_CONTAINER)
+elif settings.DEFAULT_FILE_STORAGE == 'minio_storage.storage.MinioStorage':
+    from minio_storage.storage import create_minio_client_from_settings
+    minio_client = create_minio_client_from_settings()
+    BundleStorage = StorageClass(minio_client, settings.MINIO_STORAGE_MEDIA_BUCKET_NAME)
+    PublicStorage = StorageClass(minio_client, settings.MINIO_PRIVATE_STORAGE_BUCKET)
 else:
     # No storage provided, like in a test, let's just do something basic
     BundleStorage = StorageClass()
