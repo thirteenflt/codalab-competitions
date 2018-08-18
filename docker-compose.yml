@@ -26,22 +26,22 @@ services:
   # --------------------------------------------------------------------------
   # Database
   # --------------------------------------------------------------------------
-  postgres:
-    image: postgres:9.6.3
-    environment:
-      - POSTGRES_DB=${DB_NAME}
-      - POSTGRES_USER=${DB_USER}
-      - POSTGRES_PASSWORD=${DB_PASSWORD}
-    volumes:
-      - ./docker:/app/docker
-      - ${LOGGING_DIR}/psql:/var/log/psql
-      - ${DB_DATA_PATH}:/var/lib/postgresql/data
-      - ./backups:/app/backups
-    env_file: .env
-    logging:
-      options:
-        max-size: "200k"
-    container_name: postgres
+  # postgres:
+  #  image: postgres:9.6.3
+  #  environment:
+  #    - POSTGRES_DB=${DB_NAME}
+  #    - POSTGRES_USER=${DB_USER}
+  #    - POSTGRES_PASSWORD=${DB_PASSWORD}
+  #  volumes:
+  #    - ./docker:/app/docker
+  #    - ${LOGGING_DIR}/psql:/var/log/psql
+  #    - ${DB_DATA_PATH}:/var/lib/postgresql/data
+  #    - ./backups:/app/backups
+  #  env_file: .env
+  #  logging:
+  #    options:
+  #      max-size: "200k"
+  #  container_name: postgres
 
 
   # --------------------------------------------------------------------------
@@ -133,7 +133,7 @@ services:
       - CONFIG_SERVER_NAME=${CODALAB_SITE_DOMAIN}
       - PYTHONUNBUFFERED=1
     links:
-      - postgres
+      # - postgres
       - rabbit
       - memcached
     logging:
@@ -159,13 +159,13 @@ services:
       - DEBUG=False
     env_file: .env
     links:
-      - postgres
+      # - postgres
       - rabbit
     logging:
       options:
         max-size: "200k"
     container_name: worker_site
-      
+
   worker_compute:
     image: codalab/competitions-v1-compute-worker:latest
     privileged: true
